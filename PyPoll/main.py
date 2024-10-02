@@ -11,15 +11,15 @@ import csv
 import os
 
 # Define Functions
-def inc_vote(vote_position):
+def inc_vote(vote_position): # increment the vote for the current candidate
     global votes
     votes[vote_position] = votes[vote_position] + 1
 
-def calc_percentages(index):
+def calc_percentages(index): #calculate the percentages for each candidate
     global total_votes
     global votes
     global percentages
-    percentages[index] = votes[index] / total_votes
+    percentages[index] = 100 * votes[index] / total_votes
     percentages[index] = percentages[index]
 
 # Files to load and output (update with correct file paths)
@@ -28,16 +28,14 @@ file_to_output = os.path.join("analysis", "election_analysis.txt")  # Output fil
 
 # Initialize variables to track the election data
 total_votes = 0  # Track the total number of votes cast
-delay = 0
-winner = ""
+winner = "" # Placeholder for the name of the winner
+
+delay = 0 # delay value
 
 # Define lists and dictionaries to track candidate names and vote counts
 candidate_list = []
 votes = [0,0,0]
 percentages = [0,0,0]
-
-# Winning Candidate and Winning Count Tracker
-
 
 # Open the CSV file and process it
 with open(file_to_load) as election_data:
@@ -75,17 +73,6 @@ with open(file_to_load) as election_data:
         elif row[2] == candidate_list[2]: #If current row CANDIDATE = Second candidate in list
             inc_vote(2)
 
-# Open a text file to save the output
-with open(file_to_output, "w") as txt_file:
-    print()
-    print('Election Results')
-    print('-------------------------------------')
-    # Print the total vote count (to terminal)
-    print(f'Total Votes: {total_votes:,}')
-    print('-------------------------------------')
-    # Write the total vote count to the text file
-
-
     # Loop through the candidates to determine vote percentages and identify the winner
     for candidate in candidate_list:
         index = candidate_list.index(candidate)
@@ -100,15 +87,25 @@ with open(file_to_output, "w") as txt_file:
         if votes[index] > most_votes:
             winner = candidate_list[index]
 
-        # Print and save each candidate's vote count and percentage
+# Save the winning candidate output to the text file
+# Generate and print the winning candidate output
+output = f'''
+Election Results
+-------------------------------------
+Total Votes: {total_votes:,}
+-------------------------------------
+{candidate_list[0]}: {percentages[0]:,.3f}% ({votes[0]:,})
+{candidate_list[1]}: {percentages[1]:,.3f}% ({votes[1]:,})
+{candidate_list[2]}: {percentages[2]:,.3f}% ({votes[2]:,})
+-------------------------------------
+Winner: {winner}
+-------------------------------------
+'''
 
+print(output)
 
-    # Generate and print the winning candidate output
+# Open a text file to save the output
+with open(file_to_output, "w") as txt_file:
 
-
-    # Save the winning candidate output to the text file
-print()
-print(candidate_list)
-print(votes)
-print(percentages)
-print(f'Winner: {winner}')
+    # Write results to text file
+    txt_file.write(output)
