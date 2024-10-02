@@ -64,7 +64,7 @@ with open(file_to_output, "w") as txt_file:
         # Print and save each candidate's vote count and percentage
 
 
-    # Generate and print the winning candidate summary
+    # Generate and print the winning candidate output
 
 
-    # Save the winning candidate summary to the text file
+    # Save the winning candidate output to the text file
