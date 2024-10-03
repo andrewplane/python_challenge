@@ -17,6 +17,8 @@ file_to_output = os.path.join('analysis', 'budget_analysis.txt')  # Output file 
 # Define variables to track the financial data
 total_months = 0
 total_net = 0
+total_changes = 0
+previous_row_net = 0
 
 # Add more variables to track other necessary financial data
 avg_change = 0
@@ -40,18 +42,22 @@ with open(file_to_load) as financial_data:
 
         # Track the net change
         total_net = int(row[1]) + total_net
+        if previous_row_net != 0:
+            total_changes = total_changes + int(row[1]) - previous_row_net
 
         # Calculate the greatest increase in profits (month and amount)
-        if int(row[1]) > int(greatest_inc[1]):
-            greatest_inc = [row[0], row[1]]
-
+        current_change = int(row[1]) - previous_row_net
+        if current_change > int(greatest_inc[1]):
+            greatest_inc = [row[0], current_change]
 
         # Calculate the greatest decrease in losses (month and amount)
-        if int(row[1]) < int(greatest_dec[1]):
-            greatest_dec = [row[0], row[1]]
+        if current_change < int(greatest_dec[1]):
+            greatest_dec = [row[0], current_change]
+
+        previous_row_net = int(row[1]) # Adv previous net
 
 # Calculate the average net change across the months
-avg_change = total_net / total_months
+avg_change = total_changes / (total_months - 1)
 avg_change = avg_change.__round__(2)
 
 # Generate the output summary
