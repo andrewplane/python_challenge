@@ -12,3 +12,5 @@ PyBank revised Oct 3, 2024
 PyPoll completed on Oct 2, 2024
 
 Code adapted from PyBank main.py with added functions at the top.
+
+PyPoll revised with main.v2.py on Oct 8, 2024 to make a flexible analysis that is flexible to any number of candidates.
